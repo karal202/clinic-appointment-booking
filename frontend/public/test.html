@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image URL Tester</title>
+  <style>
+    body { font-family: Inter, system-ui, Arial, sans-serif; background:#f8fafc; color:#0f172a; padding:32px; }
+    .card{max-width:980px;margin:0 auto;background:#fff;border-radius:12px;padding:24px;box-shadow:0 10px 30px rgba(2,6,23,0.08)}
+    h2{margin:0 0 8px}
+    .row{display:flex;gap:8px;align-items:center}
+    input[type=text]{flex:1;padding:10px 12px;border-radius:8px;border:1px solid #e6edf3}
+    button{padding:10px 14px;border-radius:8px;border:none;background:#4f46e5;color:#fff;cursor:pointer}
+    img{max-width:100%;margin-top:16px;border-radius:8px;border:1px solid #e6edf3;background:#f3f4f6}
+    .status{margin-top:8px;font-size:13px;color:#475569}
+    .example{margin-top:12px;font-size:13px;color:#64748b;background:#f1f5f9;padding:10px;border-radius:6px}
+    ul{margin:6px 0 0 18px}
+    code{background:#eef2ff;padding:2px 6px;border-radius:4px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Image URL tester 🚀</h2>
+    <p class="status">Paste an image URL (backend <code>/uploads</code> or any image) and click Preview. The tool will try to fetch the file first to surface HTTP errors.</p>
+
+    <div class="row" style="margin-top:12px;">
+      <input id="url" type="text" placeholder="e.g. http://localhost:8080/uploads/your-file.png" value="http://localhost:8080/uploads/your-file.png" />
+      <button id="btn">Preview</button>
+      <button id="clear" style="background:#ef4444;margin-left:6px;">Clear</button>
+    </div>
+
+    <div id="msg" class="status"></div>
+    <img id="preview" src="" alt="Preview will appear here" style="display:none"/>
+
+    <div class="example">
+      Examples you can try:
+      <ul>
+        <li><code>http://localhost:8080/uploads/&lt;filename&gt;</code> — URL trả về từ upload API</li>
+        <li><code>/uploads/&lt;filename&gt;</code> — relative path (may need host)</li>
+        <li><code>https://via.placeholder.com/600x300</code> — public test image</li>
+      </ul>
+      Open this page at <strong>http://localhost:5173/test.html</strong>
+    </div>
+  </div>
+
+  <script>
+    const btn = document.getElementById('btn');
+    const clear = document.getElementById('clear');
+    const urlIn = document.getElementById('url');
+    const img = document.getElementById('preview');
+    const msg = document.getElementById('msg');
+
+    async function previewUrl() {
+      const url = urlIn.value.trim();
+      if (!url) { msg.textContent = 'Please enter a URL'; img.style.display='none'; return; }
+      msg.textContent = 'Checking URL...'; img.style.display='none';
+
+      try {
+        const res = await fetch(url, { method: 'GET' });
+        if (!res.ok) { msg.textContent = `HTTP ${res.status} ${res.statusText}`; return; }
+        const blob = await res.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        img.onload = () => { msg.textContent = 'Loaded successfully'; img.style.display='block'; };
+        img.onerror = () => { msg.textContent = 'Image load failed (possibly CORS)'; img.style.display='none'; };
+        img.src = objectUrl;
+      } catch (err) {
+        console.error(err);
+        // fallback: set src directly so browser may show CORS/console error
+        msg.textContent = 'Fetch failed — setting src directly (check console)';
+        img.src = url;
+        img.style.display = 'block';
+      }
+    }
+
+    btn.addEventListener('click', previewUrl);
+    urlIn.addEventListener('keydown', (e) => { if (e.key === 'Enter') previewUrl(); });
+    clear.addEventListener('click', () => { urlIn.value=''; img.src=''; img.style.display='none'; msg.textContent=''; });
+  </script>
+</body>
+</html>
