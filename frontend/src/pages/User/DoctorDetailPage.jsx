@@ -106,7 +106,7 @@ export default function DoctorDetailPage() {
        if (user) {
           // Use sendBeacon for reliability on page unload (refresh/close tab)
           // Note: URL must match your backend API exactly
-          const url = `http://localhost:8080/api/slots/unlock/user/${user.id}`;
+          const url = `https://clinic-appointment-booking-1ola.onrender.com/api/slots/unlock/user/${user.id}`;
           navigator.sendBeacon(url);
        }
     };
