@@ -113,20 +113,24 @@ public class AuthService {
             String pictureUrl = (String) payload.get("picture");
             
             // Find or create user
-            User user = userRepository.findByEmail(email)
-                    .orElseGet(() -> {
-                        User newUser = new User();
-                        newUser.setEmail(email);
-                        newUser.setGoogleId(googleId);
-                        newUser.setFullName(name);
-                        newUser.setAvatar(pictureUrl);
-                        newUser.setPassword(passwordEncoder.encode(googleId)); // Random password
-                        newUser.setAuthProvider(User.AuthProvider.GOOGLE);
-                        newUser.setEmailVerified(true);
-                        newUser.setRole(User.Role.USER);
-                        newUser.setIsActive(true);
-                        return userRepository.save(newUser);
-                    });
+            User user = userRepository.findByEmail(email).orElse(null);
+            
+            if (user == null) {
+                user = new User();
+                user.setEmail(email);
+                user.setPassword(passwordEncoder.encode(googleId)); // Random password
+                user.setAuthProvider(User.AuthProvider.GOOGLE);
+                user.setEmailVerified(true);
+                user.setRole(User.Role.USER);
+                user.setIsActive(true);
+            }
+            
+            // Luôn cập nhật thông tin mới nhất từ Google
+            user.setGoogleId(googleId);
+            user.setFullName(name);
+            user.setAvatar(pictureUrl);
+            
+            user = userRepository.save(user);
             
             // Generate JWT token
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());

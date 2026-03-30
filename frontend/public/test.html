@@ -24,7 +24,7 @@
     <p class="status">Paste an image URL (backend <code>/uploads</code> or any image) and click Preview. The tool will try to fetch the file first to surface HTTP errors.</p>
 
     <div class="row" style="margin-top:12px;">
-      <input id="url" type="text" placeholder="e.g. https://clinic-appointment-booking-1ola.onrender.com/uploads/your-file.png" value="https://clinic-appointment-booking-1ola.onrender.com/uploads/your-file.png" />
+      <input id="url" type="text" placeholder="e.g. http://localhost:8080/uploads/your-file.png" value="http://localhost:8080/uploads/your-file.png" />
       <button id="btn">Preview</button>
       <button id="clear" style="background:#ef4444;margin-left:6px;">Clear</button>
     </div>
@@ -35,7 +35,7 @@
     <div class="example">
       Examples you can try:
       <ul>
-        <li><code>https://clinic-appointment-booking-1ola.onrender.com/uploads/&lt;filename&gt;</code> — URL trả về từ upload API</li>
+        <li><code>http://localhost:8080/uploads/&lt;filename&gt;</code> — URL trả về từ upload API</li>
         <li><code>/uploads/&lt;filename&gt;</code> — relative path (may need host)</li>
         <li><code>https://via.placeholder.com/600x300</code> — public test image</li>
       </ul>

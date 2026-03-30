@@ -13,7 +13,7 @@ class WebSocketService {
     connect() {
         if (this.client && this.client.active) return;
 
-        const socket = new SockJS('https://clinic-appointment-booking-1ola.onrender.com/ws');
+        const socket = new SockJS('http://localhost:8080/ws');
         this.client = new Client({
             webSocketFactory: () => socket,
             onConnect: () => {

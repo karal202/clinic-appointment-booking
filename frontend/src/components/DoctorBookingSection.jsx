@@ -38,7 +38,15 @@ export default function DoctorBookingSection() {
                 <div className="relative mb-6">
                   <div className="w-24 h-24 mx-auto rounded-3xl bg-blue-100 overflow-hidden">
                     {doc.avatar ? (
-                      <img src={doc.avatar} alt={doc.fullName} className="w-full h-full object-cover" />
+                      <img 
+                        src={`/images/doctors/${doc.avatar.substring(doc.avatar.lastIndexOf('-') + 1)}`} 
+                        alt={doc.fullName} 
+                        className="w-full h-full object-cover" 
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `http://localhost:8080${doc.avatar}`;
+                        }}
+                      />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-blue-400">
                         <User size={40} />

@@ -193,7 +193,15 @@ export default function DoctorListPage() {
                       <div className="absolute -bottom-12 left-6">
                         <div className="w-24 h-24 rounded-2xl bg-white p-1 shadow-lg">
                           {doc.avatar ? (
-                            <img src={doc.avatar} alt={doc.fullName} className="w-full h-full object-cover rounded-xl" />
+                            <img 
+                              src={`/images/doctors/${doc.avatar.substring(doc.avatar.lastIndexOf('-') + 1)}`} 
+                              alt={doc.fullName} 
+                              className="w-full h-full object-cover rounded-xl" 
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `http://localhost:8080${doc.avatar}`;
+                              }}
+                            />
                           ) : (
                             <div className="w-full h-full bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
                               <User size={40} />

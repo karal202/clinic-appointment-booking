@@ -162,7 +162,15 @@ export default function HospitalDetailPage() {
                            <div key={doc.id} className="bg-white rounded-3xl p-6 border border-slate-100 hover:border-blue-200 hover:shadow-2xl transition-all flex gap-6 group">
                               <div className="w-24 h-24 rounded-2xl bg-slate-100 shrink-0 overflow-hidden border-2 border-white shadow-sm">
                                  {doc.avatar ? (
-                                    <img src={doc.avatar} alt={doc.fullName} className="w-full h-full object-cover" />
+                                    <img 
+                                      src={`/images/doctors/${doc.avatar.substring(doc.avatar.lastIndexOf('-') + 1)}`} 
+                                      alt={doc.fullName} 
+                                      className="w-full h-full object-cover" 
+                                      onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `http://localhost:8080${doc.avatar}`;
+                                      }}
+                                    />
                                  ) : (
                                     <div className="w-full h-full flex items-center justify-center text-slate-300">
                                        <User size={40} />

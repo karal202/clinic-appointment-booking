@@ -81,7 +81,17 @@ public class DoctorService {
 
     @Transactional
     public void deleteDoctor(Long id) {
-        doctorRepository.deleteById(id);
+        Doctor d = doctorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Doctor not found"));
+        // Cập nhật ràng buộc: thay vì xóa cứng (sẽ mất hết lịch sử đặt khám và đánh giá)
+        // Ta sẽ chuyển bác sĩ sang chế độ ngưng hoạt động (Soft Delete)
+        d.setIsActive(false);
+        d.setIsAvailableForBooking(false);
+        
+        // Xoá các chuyên khoa/bệnh viện liên kết nếu muốn, nhưng thường giữ lại để tra cứu lịch sử
+        // d.setHospital(null);
+        // d.setSpecialty(null);
+
+        doctorRepository.save(d);
     }
 
     @Transactional

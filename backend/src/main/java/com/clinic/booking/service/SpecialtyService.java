@@ -4,6 +4,8 @@ import com.clinic.booking.dto.SpecialtyDTO;
 import com.clinic.booking.entity.Specialty;
 import com.clinic.booking.exception.ResourceNotFoundException;
 import com.clinic.booking.repository.SpecialtyRepository;
+import com.clinic.booking.repository.DoctorRepository;
+import com.clinic.booking.entity.Doctor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class SpecialtyService {
 
     private final SpecialtyRepository specialtyRepository;
+    private final DoctorRepository doctorRepository;
 
     public List<SpecialtyDTO> getAllSpecialties() {
         return specialtyRepository.findAll().stream()
@@ -50,6 +53,13 @@ public class SpecialtyService {
 
     @Transactional
     public void deleteSpecialty(Long id) {
+        List<Doctor> doctors = doctorRepository.findBySpecialtyId(id);
+        if (doctors != null) {
+            for (Doctor d : doctors) {
+                d.setSpecialty(null);
+                doctorRepository.save(d);
+            }
+        }
         specialtyRepository.deleteById(id);
     }
 

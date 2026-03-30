@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Image Path</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .image-container {
+            margin: 20px auto;
+            border: 2px dashed #ccc;
+            padding: 10px;
+            display: inline-block;
+        }
+        img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+        }
+        .path-info {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Test Lấy Đường Dẫn Ảnh Từ Thư Mục Frontend</h2>
+
+    <div class="image-container">
+        <h3>Cách 1: Đường dẫn tương đối từ file HTML này</h3>
+        <!-- File html này nằm ở thư mục frontend nên đường dẫn sẽ là ./public/images/... -->
+        <img src="./public/images/doctors/bs_dinh_thi_thao_mai.jpg" alt="Doctor Image Relative" id="img1" onerror="handleError('img1')">
+        <div class="path-info">Đường dẫn: <code>./public/images/doctors/bs_dinh_thi_thao_mai.jpg</code></div>
+    </div>
+
+    <div class="image-container">
+        <h3>Cách 2: Test bằng JavaScript thay đổi src</h3>
+        <img id="dynamic-img" alt="Dynamic Doctor Image" onerror="handleError('dynamic-img')">
+        <br>
+        <button onclick="loadImage()">Load Ảnh Bằng JS</button>
+        <div class="path-info" id="js-path">Đường dẫn: <code>Chưa load</code></div>
+    </div>
+
+    <script>
+        function handleError(imgId) {
+            document.getElementById(imgId).alt = "❌ Không tìm thấy ảnh (Sai đường dẫn)";
+        }
+
+        function loadImage() {
+            // Thay đổi đường dẫn tới ảnh mà bạn muốn test
+            const imagePath = './public/images/doctors/bs_nguyen_thi_thanh.jpg'; 
+            
+            const imgElement = document.getElementById('dynamic-img');
+            imgElement.src = imagePath;
+            
+            document.getElementById('js-path').innerHTML = `Đường dẫn: <code>${imagePath}</code>`;
+        }
+    </script>
+</body>
+</html>

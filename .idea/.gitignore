@@ -1,34 +1,10 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-
 # Ignored default folder with query files
 /queries/
-
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-
 # Editor-based HTTP Client requests
 /httpRequests/
-
-# User-specific stuff
-/caches/
-/tasks.xml
-/usage.statistics.xml
-
-# Secrets and Important Configs (Cloud environments, DBs, Deployments)
-/aws.xml
-/azureSettings.xml
-/databaseSettings.xml
-/sshConfigs.xml
-/webServers.xml
-/httpClient.xml
-/rest-client.private.env.json
-/http-requests-log.http
-
-# File-based project format
-*.iws
-
-# User specific project settings
-/user-specific/

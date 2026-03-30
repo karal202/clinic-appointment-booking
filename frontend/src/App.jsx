@@ -14,6 +14,7 @@ import BookingPaymentFailurePage from './pages/User/BookingPaymentFailurePage';
 import MyBookingPage from './pages/User/MyBookingPage';
 import { Toaster } from 'react-hot-toast';
 import ChatAssistant from './components/ChatAssistant';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 import AdminHome from './pages/Admin/AdminHome';
@@ -31,7 +32,7 @@ import StaffHome from './pages/Staff/StaffHome';
 import QueueManagement from './pages/Staff/QueueManagement';
 import StaffRooms from './pages/Staff/StaffRooms';
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID = '187989966747-f574l8chsq2lpsl0jesujtustbgipirk.apps.googleusercontent.com';
 
 function App() {
 
@@ -50,32 +51,32 @@ function App() {
 
 
           {/* Protected Routes */}
-          <Route path="/me" element={<ProfilePage />} />
-          <Route path="/my-bookings" element={<MyBookingPage />} />
-          <Route path="/notifications" element={<NotificationPage />} />
-          <Route path="/booking/confirm" element={<BookingConfirmPage />} />
-          <Route path="/booking/success" element={<BookingSuccessPage />} />
-          <Route path="/booking/failure" element={<BookingPaymentFailurePage />} />
+          <Route path="/me" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/my-bookings" element={<ProtectedRoute><MyBookingPage /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
+          <Route path="/booking/confirm" element={<ProtectedRoute><BookingConfirmPage /></ProtectedRoute>} />
+          <Route path="/booking/success" element={<ProtectedRoute><BookingSuccessPage /></ProtectedRoute>} />
+          <Route path="/booking/failure" element={<ProtectedRoute><BookingPaymentFailurePage /></ProtectedRoute>} />
 
           {/* Admin Routes */}
-          <Route path="/admin" element={<AdminHome />} />
-          <Route path="/admin/hospitals" element={<AdminHospitals />} />
-          <Route path="/admin/doctors" element={<AdminDoctors />} />
-          <Route path="/admin/specialties" element={<AdminSpecialties />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="/admin/staff" element={<AdminStaff />} />
+          <Route path="/admin" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminHome /></ProtectedRoute>} />
+          <Route path="/admin/hospitals" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminHospitals /></ProtectedRoute>} />
+          <Route path="/admin/doctors" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminDoctors /></ProtectedRoute>} />
+          <Route path="/admin/specialties" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminSpecialties /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminUsers /></ProtectedRoute>} />
+          <Route path="/admin/staff" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminStaff /></ProtectedRoute>} />
 
           {/* Doctor Routes */}
-          <Route path="/doctor" element={<DoctorHome />} />
-          <Route path="/doctor/appointments" element={<DoctorAppointments />} />
-          <Route path="/doctor/schedules" element={<DoctorSchedules />} />
-          <Route path="/doctor/records" element={<DoctorMedicalRecords />} />
-          <Route path="/doctor/records/create/:appointmentId" element={<CreateMedicalRecord />} />
+          <Route path="/doctor" element={<ProtectedRoute allowedRoles={['DOCTOR']}><DoctorHome /></ProtectedRoute>} />
+          <Route path="/doctor/appointments" element={<ProtectedRoute allowedRoles={['DOCTOR']}><DoctorAppointments /></ProtectedRoute>} />
+          <Route path="/doctor/schedules" element={<ProtectedRoute allowedRoles={['DOCTOR']}><DoctorSchedules /></ProtectedRoute>} />
+          <Route path="/doctor/records" element={<ProtectedRoute allowedRoles={['DOCTOR']}><DoctorMedicalRecords /></ProtectedRoute>} />
+          <Route path="/doctor/records/create/:appointmentId" element={<ProtectedRoute allowedRoles={['DOCTOR']}><CreateMedicalRecord /></ProtectedRoute>} />
           
           {/* Staff Routes */}
-          <Route path="/staff" element={<StaffHome />} />
-          <Route path="/staff/queue" element={<QueueManagement />} />
-          <Route path="/staff/rooms" element={<StaffRooms />} />
+          <Route path="/staff" element={<ProtectedRoute allowedRoles={['STAFF']}><StaffHome /></ProtectedRoute>} />
+          <Route path="/staff/queue" element={<ProtectedRoute allowedRoles={['STAFF']}><QueueManagement /></ProtectedRoute>} />
+          <Route path="/staff/rooms" element={<ProtectedRoute allowedRoles={['STAFF']}><StaffRooms /></ProtectedRoute>} />
 
           {/* Catch all - redirect to home */}
           <Route path="*" element={<Navigate to="/" replace />} />

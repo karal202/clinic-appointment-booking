@@ -78,6 +78,13 @@ public class HospitalService {
 
     @Transactional
     public void deleteHospital(Long id) {
+        List<Doctor> doctors = doctorRepository.findByHospitalId(id);
+        if (doctors != null) {
+            for (Doctor d : doctors) {
+                d.setHospital(null);
+                doctorRepository.save(d);
+            }
+        }
         hospitalRepository.deleteById(id);
     }
 

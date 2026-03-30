@@ -17,8 +17,12 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
        List<Doctor> findByIsActiveTrueAndIsAvailableForBookingTrue();
 
        List<Doctor> findByHospitalIdAndIsActiveTrue(Long hospitalId);
+       
+       List<Doctor> findByHospitalId(Long hospitalId);
 
        List<Doctor> findBySpecialtyIdAndIsActiveTrue(Long specialtyId);
+       
+       List<Doctor> findBySpecialtyId(Long specialtyId);
 
        @Query("SELECT d FROM Doctor d WHERE d.hospital.id = :hospitalId AND " +
                      "d.specialty.id = :specialtyId AND d.isActive = true AND d.isAvailableForBooking = true")

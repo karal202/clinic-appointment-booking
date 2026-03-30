@@ -106,7 +106,7 @@ export default function DoctorDetailPage() {
        if (user) {
           // Use sendBeacon for reliability on page unload (refresh/close tab)
           // Note: URL must match your backend API exactly
-          const url = `https://clinic-appointment-booking-1ola.onrender.com/api/slots/unlock/user/${user.id}`;
+          const url = `http://localhost:8080/api/slots/unlock/user/${user.id}`;
           navigator.sendBeacon(url);
        }
     };
@@ -223,7 +223,15 @@ export default function DoctorDetailPage() {
                 <div className="relative">
                   <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl bg-gradient-to-br from-blue-100 to-blue-50 overflow-hidden border-4 border-white shadow-xl">
                     {doctor?.avatar ? (
-                      <img src={doctor.avatar} alt={doctor.fullName} className="w-full h-full object-cover" />
+                      <img 
+                        src={`/images/doctors/${doctor.avatar.substring(doctor.avatar.lastIndexOf('-') + 1)}`} 
+                        alt={doctor.fullName} 
+                        className="w-full h-full object-cover" 
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = doctor.avatar.startsWith('http') ? doctor.avatar : `http://localhost:8080${doctor.avatar}`;
+                        }}
+                      />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-blue-300">
                         <User size={80} />
