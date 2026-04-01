@@ -168,7 +168,7 @@ export default function HospitalDetailPage() {
                                       className="w-full h-full object-cover" 
                                       onError={(e) => {
                                         e.target.onerror = null;
-                                        e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `http://localhost:8080${doc.avatar}`;
+                                        e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `https://clinic-appointment-booking-26x8.onrender.com${doc.avatar}`;
                                       }}
                                     />
                                  ) : (
