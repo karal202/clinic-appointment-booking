@@ -32,7 +32,7 @@ import StaffHome from './pages/Staff/StaffHome';
 import QueueManagement from './pages/Staff/QueueManagement';
 import StaffRooms from './pages/Staff/StaffRooms';
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID = '187989966747-f574l8chsq2lpsl0jesujtustbgipirk.apps.googleusercontent.com';
 
 function App() {
 

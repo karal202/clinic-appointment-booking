@@ -56,10 +56,8 @@ public class Hospital {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ElementCollection
-    @CollectionTable(name = "hospital_rooms", joinColumns = @JoinColumn(name = "hospital_id"))
-    @Column(name = "room_name")
-    private List<String> rooms;
+    @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HospitalRoom> rooms;
 
     // Relationships
     @OneToMany(mappedBy = "hospital", cascade = CascadeType.ALL)

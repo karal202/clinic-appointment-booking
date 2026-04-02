@@ -7,9 +7,11 @@ import com.clinic.booking.dto.SpecialtyDTO;
 import com.clinic.booking.entity.Doctor;
 import com.clinic.booking.entity.Hospital;
 import com.clinic.booking.entity.Specialty;
+import com.clinic.booking.entity.HospitalRoom;
 import com.clinic.booking.exception.ResourceNotFoundException;
 import com.clinic.booking.repository.DoctorRepository;
 import com.clinic.booking.repository.HospitalRepository;
+import com.clinic.booking.repository.HospitalRoomRepository;
 import com.clinic.booking.repository.SpecialtyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final SpecialtyRepository specialtyRepository;
     private final DoctorRepository doctorRepository;
+    private final HospitalRoomRepository hospitalRoomRepository;
     private final com.clinic.booking.repository.AppointmentRepository appointmentRepository;
     private final com.clinic.booking.repository.UserRepository userRepository;
 
@@ -59,8 +62,23 @@ public class HospitalService {
         h.setPhone(dto.getPhone());
         h.setImageUrl(dto.getImageUrl());
         h.setDetails(dto.getDetails());
-        h.setRooms(dto.getRooms());
-        return mapToDTO(hospitalRepository.save(h));
+        
+        Hospital savedHospital = hospitalRepository.save(h);
+        
+        if (dto.getRooms() != null) {
+            List<HospitalRoom> rooms = dto.getRooms().stream()
+                    .map(name -> {
+                        HospitalRoom room = new HospitalRoom();
+                        room.setName(name);
+                        room.setHospital(savedHospital);
+                        return room;
+                    })
+                    .collect(Collectors.toList());
+            hospitalRoomRepository.saveAll(rooms);
+            savedHospital.setRooms(rooms);
+        }
+        
+        return mapToDTO(savedHospital);
     }
 
     @Transactional
@@ -72,7 +90,23 @@ public class HospitalService {
         h.setPhone(dto.getPhone());
         h.setImageUrl(dto.getImageUrl());
         h.setDetails(dto.getDetails());
-        h.setRooms(dto.getRooms());
+
+        if (dto.getRooms() != null) {
+            // Remove existing rooms
+            hospitalRoomRepository.deleteAll(h.getRooms());
+            
+            // Add new rooms
+            List<HospitalRoom> newRooms = dto.getRooms().stream()
+                    .map(name -> {
+                        HospitalRoom room = new HospitalRoom();
+                        room.setName(name);
+                        room.setHospital(h);
+                        return room;
+                    })
+                    .collect(Collectors.toList());
+            h.setRooms(newRooms);
+        }
+
         return mapToDTO(hospitalRepository.save(h));
     }
 
@@ -118,11 +152,18 @@ public class HospitalService {
         dto.setPhone(h.getPhone());
         dto.setImageUrl(h.getImageUrl());
         dto.setDetails(h.getDetails());
-        List<String> rooms = h.getRooms();
-        if (rooms == null || rooms.isEmpty()) {
-            rooms = java.util.Arrays.asList("Phòng 101", "Phòng 102", "Phòng Cấp cứu", "Phòng Xét nghiệm");
+        
+        List<String> roomNames = null;
+        if (h.getRooms() != null) {
+            roomNames = h.getRooms().stream()
+                    .map(HospitalRoom::getName)
+                    .collect(Collectors.toList());
         }
-        dto.setRooms(rooms);
+        
+        if (roomNames == null || roomNames.isEmpty()) {
+            roomNames = java.util.Arrays.asList("Phòng 101", "Phòng 102", "Phòng Cấp cứu", "Phòng Xét nghiệm");
+        }
+        dto.setRooms(roomNames);
         dto.setCreatedAt(h.getCreatedAt());
         dto.setUpdatedAt(h.getUpdatedAt());
 

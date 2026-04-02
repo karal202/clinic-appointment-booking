@@ -1,9 +1,11 @@
 package com.clinic.booking.component;
 
 import com.clinic.booking.entity.Hospital;
+import com.clinic.booking.entity.HospitalRoom;
 import com.clinic.booking.entity.Staff;
 import com.clinic.booking.entity.User;
 import com.clinic.booking.repository.HospitalRepository;
+import com.clinic.booking.repository.HospitalRoomRepository;
 import com.clinic.booking.repository.StaffRepository;
 import com.clinic.booking.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class SampleDataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final StaffRepository staffRepository;
     private final HospitalRepository hospitalRepository;
+    private final HospitalRoomRepository hospitalRoomRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -45,7 +49,17 @@ public class SampleDataInitializer implements CommandLineRunner {
 
                 // Initialize rooms if empty
                 if (targetHospital.getRooms() == null || targetHospital.getRooms().isEmpty()) {
-                    targetHospital.setRooms(Arrays.asList("Phòng 101", "Phòng 102", "Phòng Cấp cứu", "Phòng Chờ"));
+                    List<String> roomNames = Arrays.asList("Phòng 101", "Phòng 102", "Phòng Cấp cứu", "Phòng Chờ");
+                    List<HospitalRoom> rooms = roomNames.stream()
+                            .map(name -> {
+                                HospitalRoom room = new HospitalRoom();
+                                room.setName(name);
+                                room.setHospital(targetHospital);
+                                return room;
+                            })
+                            .collect(Collectors.toList());
+                    hospitalRoomRepository.saveAll(rooms);
+                    targetHospital.setRooms(rooms);
                     hospitalRepository.save(targetHospital);
                 }
 
