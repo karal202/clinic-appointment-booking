@@ -11,6 +11,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import AssistantButton from '../../components/AssistantButton';
 import { publicAPI, userAPI, isLoggedIn, getCurrentUser } from '../../utils/api';
+import { API_URL, BASE_URL } from '../../services/api';
 import toast from 'react-hot-toast';
 import webSocketService from '../../services/websocket';
 
@@ -106,7 +107,7 @@ export default function DoctorDetailPage() {
        if (user) {
           // Use sendBeacon for reliability on page unload (refresh/close tab)
           // Note: URL must match your backend API exactly
-          const url = `http://localhost:8080/api/slots/unlock/user/${user.id}`;
+          const url = `${API_URL}/slots/unlock/user/${user.id}`;
           navigator.sendBeacon(url);
        }
     };
@@ -229,7 +230,7 @@ export default function DoctorDetailPage() {
                         className="w-full h-full object-cover" 
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = doctor.avatar.startsWith('http') ? doctor.avatar : `http://localhost:8080${doctor.avatar}`;
+                          e.target.src = doctor.avatar.startsWith('http') ? doctor.avatar : `${BASE_URL}${doctor.avatar}`;
                         }}
                       />
                     ) : (

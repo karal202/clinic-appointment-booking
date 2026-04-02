@@ -1,5 +1,6 @@
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { BASE_URL } from './api';
 
 class WebSocketService {
     constructor() {
@@ -13,7 +14,7 @@ class WebSocketService {
     connect() {
         if (this.client && this.client.active) return;
 
-        const socket = new SockJS('http://localhost:8080/ws');
+        const socket = new SockJS(`${BASE_URL}/ws`);
         this.client = new Client({
             webSocketFactory: () => socket,
             onConnect: () => {

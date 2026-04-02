@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { User, Star, ArrowRight } from 'lucide-react';
 import { publicAPI } from '../utils/api';
+import { BASE_URL } from '../services/api';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function DoctorBookingSection() {
   const [doctors, setDoctors] = useState([]);
@@ -44,7 +46,7 @@ export default function DoctorBookingSection() {
                         className="w-full h-full object-cover" 
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `http://localhost:8080${doc.avatar}`;
+                          e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `${BASE_URL}${doc.avatar}`;
                         }}
                       />
                     ) : (

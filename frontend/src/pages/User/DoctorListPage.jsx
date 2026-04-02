@@ -9,6 +9,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import AssistantButton from '../../components/AssistantButton';
 import { publicAPI } from '../../utils/api';
+import { BASE_URL } from '../../services/api';
 
 export default function DoctorListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -199,7 +200,7 @@ export default function DoctorListPage() {
                               className="w-full h-full object-cover rounded-xl" 
                               onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `http://localhost:8080${doc.avatar}`;
+                                e.target.src = doc.avatar.startsWith('http') ? doc.avatar : `${BASE_URL}${doc.avatar}`;
                               }}
                             />
                           ) : (
