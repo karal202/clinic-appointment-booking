@@ -56,7 +56,10 @@ public class DoctorService {
             keyword = null;
 
         return doctorRepository.searchDoctorsWithFilters(keyword, specialtyId, hospitalId)
-                .stream().map(this::mapToSummary).collect(Collectors.toList());
+                .stream()
+                .filter(d -> d.getIsActive() != null && d.getIsActive() && d.getIsAvailableForBooking() != null && d.getIsAvailableForBooking())
+                .map(this::mapToSummary)
+                .collect(Collectors.toList());
     }
 
     public List<DoctorSummaryDTO> searchDoctors(String keyword) {

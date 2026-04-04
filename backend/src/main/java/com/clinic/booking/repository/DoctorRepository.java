@@ -39,8 +39,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
                      "ORDER BY d.ratingAvg DESC")
        List<Doctor> findTopRatedDoctors();
 
-       @Query("SELECT d FROM Doctor d WHERE d.isActive = true AND d.isAvailableForBooking = true " +
-                     "AND (:keyword IS NULL OR LOWER(d.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+       @Query("SELECT d FROM Doctor d WHERE " +
+                     "(:keyword IS NULL OR LOWER(d.fullName) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
                      "AND (:specialtyId IS NULL OR d.specialty.id = :specialtyId) " +
                      "AND (:hospitalId IS NULL OR d.hospital.id = :hospitalId)")
        List<Doctor> searchDoctorsWithFilters(@Param("keyword") String keyword,

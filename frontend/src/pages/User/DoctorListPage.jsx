@@ -57,6 +57,11 @@ export default function DoctorListPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
+        console.log('Fetching doctors with params:', { 
+          q: searchTerm || undefined, 
+          specialtyId: selectedSpec || undefined,
+          hospitalId: hospitalFilter || undefined
+        });
         const [docsRes, specsRes] = await Promise.all([
           publicAPI.getDoctors({ 
             q: searchTerm || undefined, 
@@ -65,6 +70,7 @@ export default function DoctorListPage() {
           }),
           publicAPI.getSpecialties()
         ]);
+        console.log('Doctors response:', docsRes.data);
         setDoctors(docsRes.data || []);
         setSpecialties(specsRes.data || []);
       } catch (err) {
