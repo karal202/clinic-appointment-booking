@@ -32,7 +32,7 @@ import StaffHome from './pages/Staff/StaffHome';
 import QueueManagement from './pages/Staff/QueueManagement';
 import StaffRooms from './pages/Staff/StaffRooms';
 
-const GOOGLE_CLIENT_ID = '187989966747-f574l8chsq2lpsl0jesujtustbgipirk.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '365060303391-v16hnshie31fola7rctu0bms07m8um1c.apps.googleusercontent.com';
 
 function App() {
 
