@@ -5,6 +5,32 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>frontend</title>
+    <script>
+      // Ngăn chặn chuột phải
+      document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+      // Ngăn chặn phím tắt
+      document.onkeydown = function(e) {
+        if (
+          e.keyCode === 123 || // F12
+          (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67 || e.keyCode === 75)) || // Ctrl+Shift+I, J, C, K
+          (e.ctrlKey && e.keyCode === 85) || // Ctrl+U (View Source)
+          (e.ctrlKey && e.keyCode === 83)    // Ctrl+S (Save page)
+        ) {
+          return false;
+        }
+      };
+
+      // Debugger loop - nếu mở devtools sẽ bị dừng chương trình
+      (function() {
+        var machine = function() {};
+        machine.prototype.toString = function() {
+          debugger;
+          return '';
+        };
+        console.log('%c', machine);
+      }());
+    </script>
   </head>
   <body>
     <div id="root"></div>
